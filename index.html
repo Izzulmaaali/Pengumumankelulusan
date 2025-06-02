@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pengumuman Kelulusan MTs Maslakul Huda Sluke</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 30px;
+    margin: 0;
+    min-height: 100vh;
+    position: relative;
+    color: #fff;
+    overflow-x: hidden;
+    background: #000;
+  }
+
+  /* Background foto sekolah dengan overlay transparan gelap */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+    opacity: 0.35;
+    z-index: -2;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    z-index: -1;
+  }
+
+  header {
+    margin-bottom: 10px;
+  }
+
+  #logoSekolah {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+  }
+
+  #namaSekolah {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 10px;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+  }
+
+  #formContainer {
+    background: rgba(211, 255, 135, 0.9);
+    color: #222;
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  }
+
+  #formContainer input, #formContainer button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1.5px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  #formContainer input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 6px #007bff;
+  }
+
+  #formContainer button {
+    cursor: pointer;
+    background-color: #096a00;
+    color: white;
+    border: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  #formContainer button:hover {
+    background-color: #0056b3;
+  }
+
+  #result {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+    color: #fff;
+  }
+  #loading {
+    font-size: 25px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    color: rgb(111, 255, 0);
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+    -webkit-text-stroke: 0.5px black; /* Outline hitam */
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+  #downloadSurat {
+    color: #0f0;
+    text-decoration: underline;
+    margin-top: 20px;
+    display: none;
+}
+
+  /* Animasi balon */
+  .balloon {
+    position: fixed;
+    bottom: -150px;
+    width: 50px;
+    height: 70px;
+    background: red;
+    border-radius: 50% 50% 50% 50%;
+    animation: floatUp 3s ease forwards;
+    opacity: 0.8;
+    z-index: 1000;
+  }
+  .balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 2px;
+    height: 20px;
+    background: gray;
+  }
+  .balloon.blue { background: #00aaff; }
+  .balloon.green { background: #00cc44; }
+  .balloon.yellow { background: #ffdd00; }
+  .balloon.red { background: #ff0000; }
+
+  @keyframes floatUp {
+    0% { bottom: -150px; opacity: 0.8; }
+    100% { bottom: 100vh; opacity: 0; }
+  }
+
+  /* Kembang api (fireworks) */
+  #fireworks {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    display: none;
+    z-index: 9999;
+  }
+  .firework {
+    position: absolute;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: radial-gradient(circle, white 0%, transparent 70%);
+    animation: fireworkAnim 1s ease forwards;
+  }
+  @keyframes fireworkAnim {
+    0% {
+      transform: scale(1) translate(0,0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(0) translate(var(--x), var(--y));
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img id="logoSekolah" src="logosekolah.png" alt="logoSekolah" />
+  <div id="namaSekolah">MTS MASLAKUL HUDA SLUKE</div>
+</header>
+
+<div id="formContainer">
+  <h2 id="loading">PENGUMUMAN KELULUSAN</h2>
+  <input type="text" id="nama" placeholder="Masukkan Nama" />
+  <input type="text" id="nisn" placeholder="Masukkan NISN" />
+  <button id="cekKelulusan">Cek Kelulusan</button>
+</div>
+<div id="result"></div>
+ <a id="downloadSurat" href="#" target="_blank" style="color: #0f0; text-decoration: underline; margin-top: 20px; display: inline-block;">
+  ⬇️ Unduh Surat Keterangan Lulus
+</a>
+
+<div id="fireworks"></div>
+
+<script>
+  const dataSiswa = [
+     {
+        nama: "ALYA FASYA ALEEVA",
+        nisn: "0106095633",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"kharida ghassana lubna",
+        nisn:"0095351975",
+        status:"lulus",
+        linksurat:"https://"
+      },
+      {
+        nama:"KHOIRUL CAHYA AGUSTINA",
+        nisn:"0104108216",
+        status:"lulus",
+        linksurat:"https://"
+      },
+      {
+        nama:"KHOIRUL CAHYA AGUSTINA",
+        nisn:"0104108216",
+        status:"lulus",
+        linksurat:"https://"
+      },
+      {
+        nama:"LAILATUN NAJAH",
+        nisn:"0103786028",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"LAYLI DWI AMELIA",
+        nisn:"0091011732",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"MOCHAMMAD ALLIF QOLBI",
+        nisn:"3108627587",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"MOHAMMAD FITZAL ASFA",
+        nisn:"0104305447",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"MUHAMMAD ADAM SYAKIRO",
+        nisn:"3103663908",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"MUHAMMAD BAIHAQI",
+        nisn:"0094087052",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"MUHAMMAD CHABIBUR ROHMAN",
+        nisn:"3109165008",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"MUHAMMAD JIMMIL MUQOWWAMI",
+        nisn:"3105541256",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"MUHAMMAD MIQDAM NABHAN",
+        nisn:"0103966907",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"MUHAMMAD NUR MUZAKKA",
+        nisn:"3098198749",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"MUHAMMAD TAUFIQUL MINAN",
+        nisn:"0091928768",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"MUHAMMAD UBAYDILLAH",
+        nisn:"0099387189",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"MUHIMMATUL ALIYYAH",
+        nisn:"3107371787",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"NABILA DIANATUL FAKHIROH",
+        nisn:"0109519147",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"NABILA HIMATUL APRILIA",
+        nisn:"0104688657",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"NABILA ROHMAN ILYAS",
+        nisn:"0116936354",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"NAHYATUL UMMAYYAH",
+        nisn:"0107577949",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"NAJWA EKA NUR HAFIZAH",
+        nisn:"0101488172",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"NIA KRISTIANINGSIH",
+        nisn:"009142196",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"NUR FAIZ EKA RAMADHAN",
+        nisn:"0091409238",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"NUR LULUK FATIHIAH",
+        nisn:"0102555386",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"RAMADHANIA ZAIMA ALDA FUADIYYAH",
+        nisn:"0095418258",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"SATRIA WIJAKSANA",
+        nisn:"0108920250",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"SAYYIDA NAGWA NAJWA PUTRINA ALI",
+        nisn:"3090280326",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"SILMUN NAFIIS",
+        nisn:"0093770578",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"SITI NILA ROHMATUZ ZAHRO",
+        nisn: "3090570077",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"SYIFA NIHAYATUL MUNA",
+        nisn:"0093360631",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"ZALFA FITROTUN NIHA",
+        nisn:"0093329382",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"ZUHDATUL ZAINIA FAUZIAH",
+        nisn:"0109801051",
+        status:"lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "AHMAD HADI",
+        nisn: "3096100977",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama:"ALIF PERMANA PUTRA",
+        nisn: "0104357062",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "ANITA LUTFIANA",
+        nisn: "0095269010",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "ARINA NUR HASYIFAH",
+        nisn: "0104531989",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "BIMA KURNIAWAN",
+        nisn: "0109876666",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "BISMA WAHYU MURTI",
+        nisn: "0107513029",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "CHRISTOPHER ATMOJO MUTTAQIN",
+        nisn: "0093949862",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "DICKY REHAN DHANI",
+        nisn: "0101199909",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "DYNI NUR SAFITRI",
+        nisn: "0081545691",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "FATIMAH AZ ZAHRA RAMADHANI",
+        nisn: "0102921636",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "FERA MAULANA ROHMA",
+        nisn: "3098345333",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "GILANG RAMADHAN",
+        nisn: "0099776519",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "HAFSHAH EKA AURELIA",
+        nisn: "0102527680",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "HISYAM MUHAMMAD",
+        nisn: "0108648400",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "LAYYINATUS SHIFA",
+        nisn: "0097259204",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MICHELA GISA MAZAYA",
+        nisn: "0104555477",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MIFTAQHUL HANA",
+        nisn: "0102997310",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MOHAMMAD FACHRY RAMDHANI",
+        nisn: "0106513289",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MOHAMMAD FAJRI MIFTAHUL RIZQI",
+        nisn: "0099593501",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMAD ISYROTUL ALI IRWANSYAH",
+        nisn: "3102226487",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD ALI MASRUR",
+        nisn: "0109620145",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD ARIP ELAMSYAH",
+        nisn: "0103697252",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD BINTANG ALFAHRIZAL",
+        nisn: "0101302560",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MU'IZZATUL AZKIYA'",
+        nisn: "0099815335",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUKHOLIFAH PUTRI SABRINA",
+        nisn: "0109910960",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "NOVI KHOLIFAH",
+        nisn: "0108910682",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "RANI DWI NUR SAFITRI",
+        nisn: "0108882723",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "RIADHOTUL KHUSNA",
+        nisn: "3104292685",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "SEPTI NURUL AMALIA RAMADHANI",
+        nisn: "0103339749",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "SERENA ULIZZAHRO",
+        nisn: "0103612041",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "SITI KIRANA INDAH RAHMA SARI",
+        nisn: "0109367455",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "SRI MULYANI",
+        nisn: "0108297956",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "TISA AULIDIA",
+        nisn: "0091361337",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "TRI NINDI RAHAYU",
+        nisn: "0109163599",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "ZASKIA ANIQOTUS SYIFA",
+        nisn: "0093601961",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "AHMAD SYAUQI TAUFIQUR ROHMAN",
+        nisn: "0103710694",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "ABDUL CHALIM",
+        nisn: "0106524509",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "ACHMAD NUR ICHSAN",
+        nisn: "0098001465",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "AHMAD FAHMI AMRILLAH",
+        nisn: "0107753482",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "AHMAD RIZQI ALMUBAROK",
+        nisn: "0107325772",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "AHMAD ZIYAN AHSANI",
+        nisn: "0095252347",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "AISYA CAHYA WULAN RAMADHANI",
+        nisn: "0099598973",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "ALFIN ANNIZHAM",
+        nisn: "0093996387",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "DHOVIN FATKHUR ROHMAN",
+        nisn: "0098622252",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "FANANI AHMAD",
+        nisn: "0103362099",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "JAZILLAH HIMMATUN ALIYAH",
+        nisn: "0103115181",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "KHUSNUS SALISATUS SOBIAH",
+        nisn: "0101424643",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "LUBABUR ROSYID",
+        nisn: "0095905001",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD RIZQI AULIA AS SHOFI",
+        nisn: "0102083740",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MALINDA ERIX ARWANI",
+        nisn: "0102334216",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MOHAMMAD WAFIQ ABROR",
+        nisn: "0092334527",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD ANDRIAN",
+        nisn: "0109730049",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD ASHA RAMADHAN",
+        nisn: "3107502605",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD BAHRUDDIN MUKHLIS",
+        nisn: "0107628374",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD FATIHUN NADA",
+        nisn: "0106827937",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD LUTHFI",
+        nisn: "0096366949",
+        status: "lulus",
+        linkSurat: ""
+      },
+      { 
+        nama: "MUHAMMAD YUDHA SAPTA PRATAMA",
+        nisn: "0095793797",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHIMMATUN NUR LAILIYAH",
+        nisn: "0107618660",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUKHAMMAD KAFA BILLAH",
+        nisn: "0109712278",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "NUR NABILA SAFIRA",
+        nisn: "0107253159",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "RAFFA ADITYA PRIYANA",
+        nisn: "3105871080",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "RAKHA GAFRILLA BINTANG PRAYOGA",
+        nisn: "3103457632",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "RINDIANI LENINA MARXISTA",
+        nisn: "0093642886",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "SALMA AYATUL KHUSNA",
+        nisn: "0106363988",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "SALSA BILA AZZAHRO",
+        nisn: "0099771001",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "SITI AMILYA UL KHUSNA",
+        nisn: "0107812080",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "SITI INDAH RIDA'UL MAGHFIROH",
+        nisn: "0107856890",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "SITI MIFTAHUL MUSLIMAH",
+        nisn: "0104009520",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "SITI ZAHROTUSSYIFAH",
+        nisn: "0101366947",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "UMI SALSABILA",
+        nisn: "0105051320",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "YULIA INDANA LAZULFA",
+        nisn: "0096382277",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "ADIL PRADIKA OKTAVIAN HAZANI",
+        nisn: "0102195136",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "DAFI ANSAH M.HABIBUN NIZAR",
+        nisn: "0109712278",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "DARA NAYLA IZZIFURAYDA",
+        nisn: "0094708917",
+        status: "lulus",
+        linkSurat: ""
+      },
+      { 
+        nama: "DIANA SAFITRI",
+        nisn: "0117169693",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "DIYAH AYU NUR AFIDAH",
+        nisn: "3107643116",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "JIHAN PUTRI NINGSIH",
+        nisn: "0093045584",
+        status: "lulus",
+        linkSurat: ""
+      },
+      { 
+        nama: "MITSLINA BILQIS",
+        nisn: "0106340973",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MOHAMAD SHOKIBUL HIMAM",
+        nisn: "3107629264",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MOHAMMAD KHOIRUDIN SHEKNUN",
+        nisn: "0106605364",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD ABDULLOH RIKZA",
+        nisn: "3102716295",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD AINUL MUHSININ",
+        nisn: "0104734194",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD DAFFA AMRULLAH",
+        nisn: "0098175853",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD DIKA FIRMANSYA",
+        nisn: "3109201011",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD GALANG DHIYO PRATAMA",
+        nisn: "0099897964",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD HASAN AUFASSALAM",
+        nisn: "0096747597",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD IRFANSYAH",
+        nisn: "0093882682",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD JADIDUZ ZAMAN",
+        nisn: "0104838070",
+        status: "lulus",
+        linkSurat: ""
+      },
+      { 
+        nama: "MUHAMMAD NAHID CHASAN",
+        nisn: "0105579221",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD RIZQI RADITYA ABRORI",
+        nisn: "0102164580",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD ULIL ALBAB",
+        nisn: "0104421907",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "MUHAMMAD ZIDNAL FALAKH",
+        nisn: "0095268012",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "NABILA RESTI JULIANA ANJANI",
+        nisn: "0108967424",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "NOUFAL SAPUTRA",
+        nisn: "0104847207",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "NOVA MAULIDA AULIA ZAHRA",
+        nisn: "0096510370",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "NUR MAILA RETNO PUTRI",
+        nisn: "0104642061",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "PUJI LESTARI",
+        nisn: "0108286227",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "RADITYA YANUAR ISKHAK",
+        nisn: "0101826146",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "REHAN NURIL IKHSAN",
+        nisn: "0101561935",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "REVALENA FATARANI",
+        nisn: "0094493722",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "SANDI PRASETIA",
+        nisn: "0099168259",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "SITI KUMAIROH",
+        nisn: "3090935630",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "SURYA CANDRA KARTIKA",
+        nisn: "0106980560",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "SYAHRIL FAUZA AHMAD",
+        nisn: "0104175286",
+        status: "lulus",
+        linkSurat: ""
+      },
+      {
+        nama: "VICKY EKA WIBOWO",
+        nisn: "3107597117",
+        status: "lulus",
+        linkSurat: ""
+      },
+
+    ];
+  const cekButton = document.getElementById("cekKelulusan");
+  const resultDiv = document.getElementById("result");
+  const fireworksDiv = document.getElementById("fireworks");
+  const loadingDiv = document.getElementById("loading");
+
+  cekButton.addEventListener("click", () => {
+    const nama = document.getElementById("nama").value.trim();
+    const nisn = document.getElementById("nisn").value.trim();
+
+    resultDiv.textContent = "";
+    resultDiv.style.color = "";
+    loadingDiv.textContent = "";
+
+    if (!nama || !nisn) {
+      alert("Mohon isi Nama dan NISN terlebih dahulu!");
+      return;
+    }
+
+    if (!/^\d+$/.test(nisn)) {
+      alert("NISN hanya boleh berisi angka!");
+      return;
+    }
+
+    // Tampilkan loading
+    loadingDiv.textContent = "Sedang diproses...";
+
+    setTimeout(() => {
+      loadingDiv.textContent = "";
+
+      const siswa = dataSiswa.find(
+        s => s.nama.toLowerCase() === nama.toLowerCase() && s.nisn === nisn
+      );
+
+      if (!siswa) {
+        resultDiv.textContent = "Data tidak ditemukan!";
+        resultDiv.style.color = "#ffdddd";
+        clearCelebration();
+        return;
+      }
+      if (siswa.linkSurat) {
+      const link = document.getElementById("downloadSurat");
+      link.href = siswa.linkSurat;
+      link.style.display = "inline-block";
+      } else {
+      document.getElementById("downloadSurat").style.display = "none";
+      }
+
+      if (siswa.status === "lulus") {
+        resultDiv.style.color = "#d4f9d4";
+        resultDiv.innerHTML = `Selamat, <strong>${siswa.nama}</strong> (NISN: ${siswa.nisn}) dinyatakan <span style="color: limegreen;">LULUS 🎓🎓🎉</span>`;
+        startCelebration();
+      } else {
+        resultDiv.style.color = "#ffbbbb";
+        resultDiv.innerHTML = `Maaf, <strong>${siswa.nama}</strong> (NISN: ${siswa.nisn}) dinyatakan <span style="color: red;">TIDAK LULUS</span>.`;
+        clearCelebration();
+      }
+    }, 3000);
+  });
+
+  function startCelebration() {
+    clearCelebration();
+    createBalloons();
+    createFireworks();
+
+    // Hentikan animasi setelah 10 detik
+    setTimeout(() => {
+      clearCelebration();
+    }, 10000);
+  }
+
+  function clearCelebration() {
+    fireworksDiv.style.display = "none";
+    fireworksDiv.innerHTML = "";
+    // Hapus balon yang masih ada
+    document.querySelectorAll(".balloon").forEach(b => b.remove());
+  }
+
+  function createBalloons() {
+    const colors = ["red", "blue", "green", "yellow"];
+    for (let i = 0; i < 15; i++) {
+      const balloon = document.createElement("div");
+      balloon.classList.add("balloon");
+      balloon.classList.add(colors[i % colors.length]);
+      balloon.style.left = (Math.random() * 90 + 5) + "vw";
+      balloon.style.animationDuration = (10 + Math.random() * 2) + "s";
+      document.body.appendChild(balloon);
+      balloon.addEventListener("animationend", () => balloon.remove());
+    }
+  }
+
+  function createFireworks() {
+    fireworksDiv.style.display = "block";
+    for (let i = 0; i < 50; i++) {
+      const firework = document.createElement("div");
+      firework.classList.add("firework");
+      firework.style.left = Math.random() * window.innerWidth + "px";
+      firework.style.top = Math.random() * window.innerHeight + "px";
+      firework.style.setProperty("--x", (Math.random() * 200 - 100) + "px");
+      firework.style.setProperty("--y", (Math.random() * 200 - 100) + "px");
+      firework.style.animationDelay = (Math.random() * 1) + "s";
+      fireworksDiv.appendChild(firework);
+      firework.addEventListener("animationend", () => firework.remove());
+    }
+  }
+</script>
+
+</body>
+</html>
